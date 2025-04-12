@@ -4,9 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+### 🚀 Features
+
+- Add feature in the same commit message
+
 ### 🐛 Bug Fixes
 
 - Fixes
+
+### 📚 Documentation
+
+- Add doc in the same commit message
 
 ## [1.0.3] - 2025-04-12
 
