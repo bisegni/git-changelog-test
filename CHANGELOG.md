@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+### 🚀 Features
+
+- We are adding a new feature
+
 ### 🐛 Bug Fixes
 
 - Whaever need to be fixed
