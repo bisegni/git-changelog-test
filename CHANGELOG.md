@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### 🚀 Features
+
+- Add a new feature called b
+
+### 📚 Documentation
+
+- *(c++)* Implemented new comment on c++ file
+
 ## [1.0.2] - 2025-04-12
 
 ### 🚀 Features
