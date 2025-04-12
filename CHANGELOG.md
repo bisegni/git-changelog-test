@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### 🐛 Bug Fixes
+
+- Now we are simulating a fix after the tag creation
+
+### 📚 Documentation
+
+- Implemented new documentation
+
 ## [1.0.0] - 2025-04-12
 
 ### 💼 Other
