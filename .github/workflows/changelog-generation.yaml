@@ -22,6 +22,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           exclude_types: other,doc,chore
+          config_file: .github/tag-changelog-config.js
       - name: Commit and push changelog
         uses: EndBug/add-and-commit@v9.1.4
         env:
