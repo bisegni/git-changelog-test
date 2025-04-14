@@ -1,0 +1,38 @@
+name: GenerateChangelogAndCreatePR
+on:
+  push:
+    tags:
+      - "*"
+  workflow_dispatch:
+concurrency:
+  group: changelog-${{ github.ref_name }}
+  cancel-in-progress: true
+jobs:
+  changelog:
+    name: Generate changelog and create PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/create-github-app-token@v2.0.2
+        id: githubAppAuth
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          repositories: "elog-plus"
+      - name: Create changelog text
+        id: changelog
+        uses: loopwerk/tag-changelog@v1.3.0
+        with:
+          token: ${{ steps.githubAppAuth.outputs.token }}
+          exclude_types: other,doc,chore
+      - name: Commit and push changelog
+        uses: EndBug/add-and-commit@v7
+        env:
+          GITHUB_TOKEN: ${{ steps.githubAppAuth.outputs.token }}
+        with:
+          add: CHANGELOG.md
+          message: "chore: Update CHANGELOG.md"
+          branch: main
