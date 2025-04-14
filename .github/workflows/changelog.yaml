@@ -1,43 +1,50 @@
-name: changelog
-on: 
-    push:
-        branches:
-        - main
-        tags:
-        - '*'
-    workflow_dispatch:
-
+name: GenerateChangelogAndCreatePR
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref_name }}
+  group: changelog-${{ github.ref_name }}
   cancel-in-progress: true
+
 jobs:
   changelog:
-    name: Generate changelog
+    name: Generate changelog and create PR
     runs-on: ubuntu-latest
-    outputs:
-      release_body: ${{ steps.git-cliff.outputs.content }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Generate a changelog
+      - name: Generate changelog
         uses: orhun/git-cliff-action@v4
-        id: git-cliff
         with:
           config: cliff.toml
         env:
           OUTPUT: CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
 
-      - name: Commit
+      - name: Commit and push changelog
         run: |
-              git config --local user.email "github-actions[bot]@users.noreply.github.com"
-              git config --local user.name "github-actions[bot]"
-              git checkout main
-              git add CHANGELOG.md
-              # Commit and push changes
-              git commit -m "Update test deployment to use the image '$DEPLOY_IMAGE'" || echo "No changes to commit"
-              git push
+          BRANCH_NAME="auto/changelog-update"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git checkout -B "$BRANCH_NAME"
+          git add CHANGELOG.md
+          git commit -m "chore: Update changelog [skip ci]" || echo "No changes to commit"
+          git push -f origin "$BRANCH_NAME"
 
+      - name: Create PR and enable auto-merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base main \
+            --head auto/changelog-update \
+            --title "chore: Automated Changelog Update" \
+            --body "Auto-generated changelog update." || echo "PR already exists"
+          
+          PR_URL=$(gh pr view auto/changelog-update --json url -q .url)
+          gh pr merge "$PR_URL" --auto --squash || echo "Auto-merge already enabled"
