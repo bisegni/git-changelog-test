@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file.
 ### 🐛 Bug Fixes
 
 - Fixes
+- Fixes
+- Fixes
+- Add new config file
+- Add new config file
+- Change changelog engine
 
 ### 📚 Documentation
 
