@@ -1,4 +1,4 @@
-name: GenerateChangelogAndCreatePR
+name: GenerateChangelog
 on:
   push:
     tags:
@@ -30,4 +30,3 @@ jobs:
         with:
           add: CHANGELOG.md
           message: "chore: Update CHANGELOG.md"
-          branch: main
