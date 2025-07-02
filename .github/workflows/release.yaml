@@ -3,13 +3,13 @@ name: Release
 on:
   pull_request:
     types:
-      - closed
+      - opened
     branches:
       - main
 
 jobs:
   release:
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release')
+    if: startsWith(github.event.pull_request.head.ref, 'release')
     runs-on: ubuntu-latest
 
     permissions:
@@ -17,7 +17,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -39,18 +39,23 @@ jobs:
           echo "Injecting version: $version"
 
       - name: Generate changelog with git-cliff
-        uses: orhun/git-cliff-action@v3
+        uses: orhun/git-cliff-action@v4
         with:
           config: ./cliff.toml
           args: --tag v${{ steps.gitversion.outputs.semVer }} --output CHANGELOG.md
 
-      - name: Commit and push version + changelog
+      - name: Set Git user identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push version + changelog
+        run: |
+          git checkout ${{ github.event.pull_request.head.ref }}
+          git pull origin ${{ github.event.pull_request.head.ref }}
           git add CHANGELOG.md
-          git commit -m "chore: release v${{ steps.gitversion.outputs.semVer }}"
-          git push
+          git commit -m "chore: release v${{ steps.version.outputs.version }}"
+          git push origin ${{ github.event.pull_request.head.ref }}
 
       - name: Create Git tag
         run: |
