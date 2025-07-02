@@ -7,7 +7,7 @@ on:
 
 jobs:
   release:
-    if: startsWith(github.head_ref || github.ref_name, 'release/')
+    if: startsWith(github.event.head_commit.message, 'Merge pull request') && startsWith(github.ref_name, 'main')
     runs-on: ubuntu-latest
 
     permissions:
@@ -18,30 +18,40 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # needed for git-cliff to access full history
+          fetch-depth: 0
 
-      - name: Set up Git
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0
+        with:
+          versionSpec: '5.x'
+
+      - name: Run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0
+        with:
+          useConfigFile: true
+
+      - name: Update version in build.gradle
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          version="${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}"
+          echo "Injecting version: $version"
+          sed -i "s#^version.*=.*#version = '$version'#" build.gradle
 
       - name: Generate changelog with git-cliff
         uses: orhun/git-cliff-action@v3
         with:
           config: ./cliff.toml
-          args: --tag HEAD --output CHANGELOG.md
+          args: --tag v${{ steps.gitversion.outputs.semVer }} --output CHANGELOG.md
 
-      - name: Commit and push CHANGELOG.md
+      - name: Commit and push version + changelog
         run: |
-          git add CHANGELOG.md
-          git commit -m "chore: update changelog"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add build.gradle CHANGELOG.md
+          git commit -m "chore: release v${{ steps.gitversion.outputs.semVer }}"
           git push
-
-      - name: Extract version from branch name
-        id: version
-        run: echo "version=${GITHUB_REF_NAME#release-}" >> $GITHUB_OUTPUT
 
       - name: Create Git tag
         run: |
-          git tag -a "${{ steps.version.outputs.version }}" -m "Release ${{ steps.version.outputs.version }}"
-          git push origin "${{ steps.version.outputs.version }}"
+          git tag -a "v${{ steps.gitversion.outputs.semVer }}" -m "Release v${{ steps.gitversion.outputs.semVer }}"
+          git push origin "v${{ steps.gitversion.outputs.semVer }}"
