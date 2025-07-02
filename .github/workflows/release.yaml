@@ -42,7 +42,7 @@ jobs:
         uses: orhun/git-cliff-action@v3
         with:
           config: ./cliff.toml
-          args: --tag v${{ steps.gitversion.outputs.semVer }} --output CHANGELOG.md
+          args: --tag v${{ steps.gitversion.outputs.semVer }} --output-format markdown --output CHANGELOG.md
 
       - name: Set Git user identity
         run: |
