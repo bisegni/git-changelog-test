@@ -39,10 +39,10 @@ jobs:
           echo "Injecting version: $version"
 
       - name: Generate changelog with git-cliff
-        uses: orhun/git-cliff-action@v3
+        uses: orhun/git-cliff-action@v4
         with:
           config: ./cliff.toml
-          args: --tag v${{ steps.gitversion.outputs.semVer }} --output-format markdown --output CHANGELOG.md
+          args: --tag v${{ steps.gitversion.outputs.semVer }} --output CHANGELOG.md
 
       - name: Set Git user identity
         run: |
