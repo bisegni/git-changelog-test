@@ -37,7 +37,6 @@ jobs:
         run: |
           version="${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}"
           echo "Injecting version: $version"
-          sed -i "s#^version.*=.*#version = '$version'#" build.gradle
 
       - name: Generate changelog with git-cliff
         uses: orhun/git-cliff-action@v3
