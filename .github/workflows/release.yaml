@@ -20,7 +20,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0
         with:
@@ -45,11 +46,11 @@ jobs:
 
       - name: Commit and push version + changelog
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add CHANGELOG.md
-          git commit -m "chore: release v${{ steps.gitversion.outputs.semVer }}"
-          git push
+          git checkout ${{ github.event.pull_request.head.ref }}
+          git pull origin ${{ github.event.pull_request.head.ref }}
+          git add CHANGELOG.md build.gradle
+          git commit -m "chore: release v${{ steps.version.outputs.version }}"
+          git push origin ${{ github.event.pull_request.head.ref }}
 
       - name: Create Git tag
         run: |
