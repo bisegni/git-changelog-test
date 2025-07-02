@@ -17,11 +17,11 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0
         with:
@@ -48,7 +48,7 @@ jobs:
         run: |
           git checkout ${{ github.event.pull_request.head.ref }}
           git pull origin ${{ github.event.pull_request.head.ref }}
-          git add CHANGELOG.md build.gradle
+          git add CHANGELOG.md
           git commit -m "chore: release v${{ steps.version.outputs.version }}"
           git push origin ${{ github.event.pull_request.head.ref }}
 
