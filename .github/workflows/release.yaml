@@ -33,7 +33,7 @@ jobs:
         with:
           useConfigFile: true
 
-      - name: Update version in build.gradle
+      - name: Update version
         run: |
           version="${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}"
           echo "Injecting version: $version"
@@ -48,7 +48,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add build.gradle CHANGELOG.md
+          git add CHANGELOG.md
           git commit -m "chore: release v${{ steps.gitversion.outputs.semVer }}"
           git push
 
