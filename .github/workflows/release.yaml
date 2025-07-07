@@ -41,12 +41,19 @@ jobs:
         uses: orhun/git-cliff-action@v3
         with:
           config: ./cliff.toml
-          args: --tag ${{ env.VERSION }} --output CHANGELOG.md
+          args: --tag ${{ env.VERSION }}
+        env:
+          OUTPUT: CHANGELOG.md
 
       - name: Commit and push version + changelog
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout ${{ github.event.pull_request.head.ref }}
+          git pull origin ${{ github.event.pull_request.head.ref }}
           git add CHANGELOG.md
-          git commit -m "chore: release ${{ env.VERSION }}"
-          git push
+          git commit -m "chore: release v${{ env.VERSION }}"
+          git push origin ${{ github.event.pull_request.head.ref }}
+
+      - name: Create Git tag
+        run: |
+          git tag -a "v${{ env.VERSION }}" -m "Release v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}"
