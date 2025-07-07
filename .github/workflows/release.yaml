@@ -4,11 +4,12 @@ name: Release
 on:
   pull_request:
     types:
-      - opened
+      - closed
     branches:
       - main
 jobs:
   release:
+    if: startsWith(github.event.pull_request.head.ref, 'release')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -57,5 +58,5 @@ jobs:
 
       - name: Create Git tag
         run: |
-          git tag -a "v${{ env.VERSION }}" -m "Release v${{ env.VERSION }}"
-          git push origin "v${{ env.VERSION }}"
+          git tag -a "${{ env.VERSION }}" -m "Release ${{ env.VERSION }}"
+          git push origin "${{ env.VERSION }}"
