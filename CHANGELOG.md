@@ -5,11 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.25] - 2025-07-07
+
+### Changed
+- Merge c24c9578e809aa01be64d1c8bf171ecba38c2c00 into 0430e2210fcb130660a03b84471439d27fe05eeb
+- Merge branch 'release-good' of github.com:bisegni/git-changelog-test into release-good
+
+### Fixed
+- Fixes
+- Fixes
+- Fixes
+
 ## [1.0.25-PullRequest0019.15] - 2025-07-07
 
 ### Changed
-- Merge f555736d15776a94f35a20e0026de3cca9a48302 into 0430e2210fcb130660a03b84471439d27fe05eeb
+- Release v
 - Use evn::output
+
+### Fixed
+- Fixes
 
 ## [1.0.25-PullRequest0018.13] - 2025-07-02
 
@@ -126,6 +140,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix(pipeline) fixe the pipeline to perfomr the commit
 
+[1.0.25]: https://github.com///compare/v1.0.25-PullRequest0019.15..v1.0.25
 [1.0.25-PullRequest0019.15]: https://github.com///compare/v1.0.25-PullRequest0018.13..v1.0.25-PullRequest0019.15
 [1.0.25-PullRequest0018.13]: https://github.com///compare/v1.0.25-PullRequest0017.11..v1.0.25-PullRequest0018.13
 [1.0.25-PullRequest0017.11]: https://github.com///compare/v1.0.25-PullRequest0016.9..v1.0.25-PullRequest0017.11
