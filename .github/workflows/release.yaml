@@ -4,11 +4,12 @@ name: Release
 on:
   pull_request:
     types:
-      - opened
+      - closed
     branches:
       - main
 jobs:
   release:
+    if: startsWith(github.event.pull_request.head.ref, 'release')
     runs-on: ubuntu-latest
     permissions:
       contents: write
