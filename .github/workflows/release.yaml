@@ -1,10 +1,12 @@
 name: Release
 
-on:
-  push:
-    branches:
-      - 'release*'
 
+on:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - main
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -28,7 +30,6 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0
         with:
           useConfigFile: true
-          additionalArguments: '/showvariable SemVer'
 
       - name: Update version
         id: set_version
