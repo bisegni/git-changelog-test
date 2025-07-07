@@ -5,10 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.26] - 2025-07-07
+
+### Changed
+- Merge 15f723b8067b2dbe8e606313bd8926fad7926cb9 into 25ba19be2661b7a789b7ed86136d04fbdab91cbf
+- Merge pull request #23 from bisegni/release-good
+
+### Removed
+- Remove double vv
+
 ## [1.0.25] - 2025-07-07
 
 ### Changed
-- Merge c24c9578e809aa01be64d1c8bf171ecba38c2c00 into 0430e2210fcb130660a03b84471439d27fe05eeb
+- Release vv1.0.25
 - Merge branch 'release-good' of github.com:bisegni/git-changelog-test into release-good
 
 ### Fixed
@@ -140,7 +149,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix(pipeline) fixe the pipeline to perfomr the commit
 
-[1.0.25]: https://github.com///compare/v1.0.25-PullRequest0019.15..v1.0.25
+[1.0.26]: https://github.com///compare/vv1.0.25..v1.0.26
+[1.0.25]: https://github.com///compare/v1.0.25-PullRequest0019.15..vv1.0.25
 [1.0.25-PullRequest0019.15]: https://github.com///compare/v1.0.25-PullRequest0018.13..v1.0.25-PullRequest0019.15
 [1.0.25-PullRequest0018.13]: https://github.com///compare/v1.0.25-PullRequest0017.11..v1.0.25-PullRequest0018.13
 [1.0.25-PullRequest0017.11]: https://github.com///compare/v1.0.25-PullRequest0016.9..v1.0.25-PullRequest0017.11
