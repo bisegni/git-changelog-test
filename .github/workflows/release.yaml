@@ -1,17 +1,15 @@
 name: Release
 
+
 on:
   pull_request:
     types:
-      - closed
+      - opened
     branches:
       - main
-
 jobs:
   release:
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release')
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
       pull-requests: write
@@ -34,25 +32,30 @@ jobs:
           useConfigFile: true
 
       - name: Update version
+        id: set_version
         run: |
-          version="${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}"
-          echo "Injecting version: $version"
+          version="v${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}"
+          echo "VERSION=$version" >> $GITHUB_ENV
 
       - name: Generate changelog with git-cliff
         uses: orhun/git-cliff-action@v3
         with:
           config: ./cliff.toml
-          args: --tag v${{ steps.gitversion.outputs.semVer }} --output CHANGELOG.md
+          args: --tag ${{ env.VERSION }}
+        env:
+          OUTPUT: CHANGELOG.md
 
       - name: Commit and push version + changelog
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout ${{ github.event.pull_request.head.ref }}
+          git pull origin ${{ github.event.pull_request.head.ref }}
           git add CHANGELOG.md
-          git commit -m "chore: release v${{ steps.gitversion.outputs.semVer }}"
-          git push
+          git commit -m "chore: release v${{ env.VERSION }}"
+          git push origin ${{ github.event.pull_request.head.ref }}
 
       - name: Create Git tag
         run: |
-          git tag -a "v${{ steps.gitversion.outputs.semVer }}" -m "Release v${{ steps.gitversion.outputs.semVer }}"
-          git push origin "v${{ steps.gitversion.outputs.semVer }}"
+          git tag -a "v${{ env.VERSION }}" -m "Release v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}"
