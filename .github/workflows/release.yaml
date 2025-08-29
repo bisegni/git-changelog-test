@@ -124,3 +124,29 @@ jobs:
           fi
           git tag -a "${{ env.VERSION }}" -m "Release ${{ env.VERSION }}"
           git push origin "${{ env.VERSION }}"
+
+      - name: Extract release notes from CHANGELOG
+        id: notes
+        run: |
+          ver_no_v="${VERSION#v}"
+          awk -v ver="$ver_no_v" '
+            $0 ~ "^## \[" ver "\]" {p=1}
+            p {
+              if ($0 ~ /^## \[/ && $0 !~ ("^## \[" ver "\]")) exit
+              print
+            }
+          ' CHANGELOG.md > RELEASE_NOTES.md || true
+          echo "notes_path=RELEASE_NOTES.md" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          body_path: ${{ steps.notes.outputs.notes_path }}
+          draft: false
+          prerelease: false
+          make_latest: true
+          allow_updates: true
+          fail_on_unmatched_files: false
