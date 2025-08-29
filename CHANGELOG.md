@@ -18,23 +18,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Docs
-- README.MD: Udpate for the release
+- README.MD: Udpate for the release by @bisegni
 
 
 ### Fixed
-- cliff.toml: Update to leave space from two paragraph
-- cliff.toml: To better print the changelog and with less white space
-- cliff.toml: To better print the changelog
-- cliff.toml: To permit to expose the scope on the change log
-- cliff.toml: To better recognize and manage messages
-- Fixes
+- CI/CD: For pr merge
+- cliff.toml: Update to leave space from two paragraph by @bisegni
+- cliff.toml: To better print the changelog and with less white space by @bisegni
+- cliff.toml: To better print the changelog by @bisegni
+- cliff.toml: To permit to expose the scope on the change log by @bisegni
+- cliff.toml: To better recognize and manage messages by @bisegni
+- Fixes by @bisegni
 - Fixes by @bisegni
 - Fixes by @bisegni
 - Fixes by @bisegni
 
 
 ## New Contributors
-* @bisegni made their first contribution
+* @bisegni made their first contribution in [#26](https://github.com/bisegni/git-changelog-test/pull/26)
+* @github-actions[bot] made their first contribution
 ## [1.0.26] - 2025-07-07
 
 ### Changed

@@ -4,11 +4,16 @@ on:
   push:
     branches:
       - release/**
+      - release-*
     paths-ignore:
       - 'CHANGELOG.md'
   create:
   # manual trigger still available
   pull_request:
+    types: [closed]
+    branches:
+      - main
+  pull_request_target:
     types: [closed]
     branches:
       - main
@@ -22,8 +27,8 @@ jobs:
   prepare_release:
     name: Prepare changelog on release branch
     if: >-
-      (github.event_name == 'push' && startsWith(github.ref_name, 'release/')) ||
-      (github.event_name == 'create' && github.event.ref_type == 'branch' && startsWith(github.event.ref, 'release/'))
+      (github.event_name == 'push' && (startsWith(github.ref_name, 'release/') || startsWith(github.ref_name, 'release-'))) ||
+      (github.event_name == 'create' && github.event.ref_type == 'branch' && (startsWith(github.event.ref, 'release/') || startsWith(github.event.ref, 'release-')))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -77,10 +82,10 @@ jobs:
   tag_release:
     name: Tag on PR merge
     if: >-
-      github.event_name == 'pull_request' &&
+      (github.event_name == 'pull_request' || github.event_name == 'pull_request_target') &&
       github.event.action == 'closed' &&
       github.event.pull_request.merged == true &&
-      startsWith(github.event.pull_request.head.ref, 'release/')
+      (startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'release-'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -93,13 +98,13 @@ jobs:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0
+        uses: gittools/actions/gitversion/setup@v4.1.0
         with:
-          versionSpec: '5.x'
+          versionSpec: '6.x'
 
       - name: Run GitVersion
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0
+        uses: gittools/actions/gitversion/execute@v4.1.0
         with:
           useConfigFile: true
 
