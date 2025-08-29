@@ -128,20 +128,28 @@ jobs:
       - name: Extract release notes from CHANGELOG
         id: notes
         run: |
+          set -e
           ver_no_v="${VERSION#v}"
           awk -v ver="$ver_no_v" '
-            $0 ~ "^## \[" ver "\]" {p=1}
-            p {
-              if ($0 ~ /^## \[/ && $0 !~ ("^## \[" ver "\]")) exit
+            BEGIN { start = "^## \\[" ver "\\]" }
+            $0 ~ start { printing=1 }
+            printing {
+              if ($0 ~ /^## \[/ && $0 !~ start) exit
               print
             }
           ' CHANGELOG.md > RELEASE_NOTES.md || true
-          echo "notes_path=RELEASE_NOTES.md" >> $GITHUB_OUTPUT
+          if [ -s RELEASE_NOTES.md ]; then
+            echo "notes_path=RELEASE_NOTES.md" >> $GITHUB_OUTPUT
+            echo "has_notes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_notes=false" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Create GitHub Release
+      - name: Create GitHub Release (with notes)
+        if: steps.notes.outputs.has_notes == 'true'
         uses: softprops/action-gh-release@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
           tag_name: ${{ env.VERSION }}
           name: ${{ env.VERSION }}
           body_path: ${{ steps.notes.outputs.notes_path }}
@@ -149,4 +157,18 @@ jobs:
           prerelease: false
           make_latest: true
           allow_updates: true
+          fail_on_unmatched_files: false
+
+      - name: Create GitHub Release (generated notes)
+        if: steps.notes.outputs.has_notes != 'true'
+        uses: softprops/action-gh-release@v2.3.2
+        with:
+          token: ${{ github.token }}
+          tag_name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          make_latest: true
+          allow_updates: true
+          generate_release_notes: true
           fail_on_unmatched_files: false
