@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add file to generate release on github by @bisegni
 
 ### Changed
+- Prepare release v1.0.27 [skip ci]
 - Update workflow logic by @bisegni
 - Merge branch 'main' of github.com:bisegni/git-changelog-test by @bisegni
 - Merge pull request #25 from bisegni/release-08-2025 by @bisegni in [#25](https://github.com/bisegni/git-changelog-test/pull/25)
@@ -20,10 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Merge branch 'fix/double-v' of github.com:bisegni/git-changelog-test into fix/double-v by @bisegni
 
 ### Fixed
+- Fixes
 - Fixes by @bisegni
 - Fixes by @bisegni
 - Fixes by @bisegni
 
+## New Contributors
+* @bisegni made their first contribution
 ## [1.0.26] - 2025-07-07
 
 ### Changed
