@@ -1,8 +1,34 @@
-mode: mainline
-tag-prefix: '[vV]'
+# Use commit messages to decide version bumps
 commit-message-incrementing: Enabled
-major-version-bump-message: '\+semver:\s?(breaking|major)'
-minor-version-bump-message: '\+semver:\s?(feature|minor)'
-patch-version-bump-message: '\+semver:\s?(fix|patch)'
-no-bump-message: '\+semver:\s?(none|skip)'
-assembly-informational-format: '{Major}.{Minor}.{Patch}' 
+
+# Conventional Commit mapping for version bumps (single regex strings per field)
+major-version-bump-message: '^.+!:|BREAKING CHANGE(S)?:|\+semver:\s?(breaking|major)'
+minor-version-bump-message: '^feat(\(.+\))?:|\+semver:\s?(feature|minor)'
+patch-version-bump-message: '^(fix|perf)(\(.+\))?:|\+semver:\s?patch'
+no-bump-message: '^(chore|docs|style|refactor|test|ci|build|revert)(\(.+\))?:'
+
+branches:
+  main:
+    regex: ^(main|master)$
+  release:
+    regex: ^release[\/-]
+    label: rc                  # release candidates from release/*
+    is-release-branch: true
+    increment: Inherit
+  feature:
+    regex: ^(feature|feat)[\/-]
+    label: alpha
+    increment: Inherit
+  hotfix:
+    regex: ^(hotfix|bugfix|fix)[\/-]
+    label: beta
+    increment: Patch
+  develop:
+    regex: ^dev(el(op(ment)?)?)?$
+    label: dev
+    increment: Inherit
+
+ignore:
+  sha: []
+
+merge-message-formats: {}
