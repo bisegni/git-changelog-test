@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Fixed
+- CI/CD: For pr merge
 - cliff.toml: Update to leave space from two paragraph by @bisegni
 - cliff.toml: To better print the changelog and with less white space by @bisegni
 - cliff.toml: To better print the changelog by @bisegni
@@ -33,6 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixes by @bisegni
 
 
+## New Contributors
+* @bisegni made their first contribution in [#26](https://github.com/bisegni/git-changelog-test/pull/26)
+* @github-actions[bot] made their first contribution
 ## [1.0.26] - 2025-07-07
 
 ### Changed
