@@ -26,13 +26,8 @@ body = """
 
 {% for group, commits in commits | group_by(attribute="group") %}
     ### {{ group | upper_first }}
-    {%- for commit in commits %}
-        - {%- if commit.scope %}{{ commit.scope }}: {% endif -%}
-          {{ commit.message | split(pat="\n") | first | upper_first | trim }}\
-            {% if commit.remote.username %} by @{{ commit.remote.username }}{%- endif -%}
-            {% if commit.remote.pr_number %} in \
-            [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }}) \
-            {%- endif -%}
+    {% for commit in commits %}
+    - {% if commit.scope %}{{ commit.scope }}: {% endif %}{{ commit.message | split(pat="\n") | first | upper_first | trim }}{% if commit.remote.pr_number %} in [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }}){% endif %}{% if commit.remote.username %} by @{{ commit.remote.username }}{% endif %}
     {% endfor %}
 {% endfor %}
 
@@ -91,6 +86,9 @@ commit_parsers = [
   { message = "^.*: support", group = "Added" },
   { message = "^.*: remove", group = "Removed" },
   { message = "^.*: delete", group = "Removed" },
+  { message = "(?i)^merge( branch| pull request)?", skip = true },
+  { message = "(?i)^chore: prepare release", skip = true },
+  { message = "(?i)^prepare release", skip = true },
   { message = "^docs", group = "Docs" },
   { message = "^doc", group = "Docs" },
   { message = "^chore", group = "Chore" },
