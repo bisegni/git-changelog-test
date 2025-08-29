@@ -6,7 +6,6 @@ on:
       - release/**
     paths-ignore:
       - 'CHANGELOG.md'
-      - '.release-version'
   create:
   # manual trigger still available
   pull_request:
@@ -54,21 +53,19 @@ jobs:
           version="v${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}"
           echo "VERSION=$version" >> $GITHUB_ENV
           echo "version=$version" >> $GITHUB_OUTPUT
-          echo "$version" > .release-version
 
       - name: Generate changelog with git-cliff
         uses: orhun/git-cliff-action@v4.5.1
         with:
           config: ./cliff.toml
-          args: --tag ${{ env.VERSION }}
         env:
             OUTPUT: CHANGELOG.md
 
-      - name: Commit and push changelog + version file
+      - name: Commit and push changelog
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add CHANGELOG.md .release-version || true
+          git add CHANGELOG.md || true
           if git diff --cached --quiet; then
             echo "No release prep changes to commit."
             exit 0
@@ -94,27 +91,20 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.merge_commit_sha }}
 
-      - name: Install GitVersion (fallback)
+      - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0
         with:
           versionSpec: '5.x'
 
-      - name: Run GitVersion (fallback)
+      - name: Run GitVersion
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0
         with:
           useConfigFile: true
 
-      - name: Determine VERSION from file or GitVersion
-        id: determine_version
+      - name: Set VERSION env
         run: |
-          if [ -f .release-version ]; then
-            version=$(cat .release-version)
-            echo "Using version from .release-version: $version"
-          else
-            echo ".release-version not found, falling back to GitVersion"
-            version="v${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}"
-          fi
+          version="v${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}"
           echo "VERSION=$version" >> $GITHUB_ENV
 
       - name: Create and push Git tag (idempotent)
