@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add file to generate release on github by @bisegni
 
 ### Changed
+- Udpate for the release
+- Prepare release v1.0.27 [skip ci]
 - Prepare release v1.0.27 [skip ci]
 - Update workflow logic by @bisegni
 - Merge branch 'main' of github.com:bisegni/git-changelog-test by @bisegni
