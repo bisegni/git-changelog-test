@@ -24,15 +24,12 @@ body = """
     ## [Unreleased]
 {% endif -%}
 
-{% for group, commits in commits | group_by(attribute="group") %}
-    ### {{ group | upper_first }}
-    {%- for commit in commits %}
-        - {{ commit.message | split(pat="\n") | first | upper_first | trim }}\
-            {% if commit.remote.username %} by @{{ commit.remote.username }}{%- endif -%}
-            {% if commit.remote.pr_number %} in \
-            [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }}) \
-            {%- endif -%}
-    {% endfor %}
+{%- for group, commits in commits | group_by(attribute="group") %}
+### {{ group | upper_first }}
+{%- for commit in commits %}
+- {% if commit.scope %}{{ commit.scope }}: {% endif %}{{ commit.message | split(pat="\n") | first | upper_first | trim }}{% if commit.remote.pr_number %} in [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }}){% endif %}{% if commit.remote.username %} by @{{ commit.remote.username }}{% endif %}
+{%- endfor %}
+
 {% endfor %}
 
 {%- if github.contributors | filter(attribute="is_first_time", value=true) | length != 0 %}
@@ -90,6 +87,17 @@ commit_parsers = [
   { message = "^.*: support", group = "Added" },
   { message = "^.*: remove", group = "Removed" },
   { message = "^.*: delete", group = "Removed" },
+  { message = "(?i)^merge( branch| pull request)?", skip = true },
+  { message = "(?i)^chore: prepare release", skip = true },
+  { message = "(?i)^prepare release", skip = true },
+  { message = "^docs", group = "Docs" },
+  { message = "^doc", group = "Docs" },
+  { message = "^chore", group = "Chore" },
+  { message = "^ci", group = "CI" },
+  { message = "^build", group = "Build" },
+  { message = "^refactor", group = "Refactor" },
+  { message = "^style", group = "Style" },
+  { message = "^perf", group = "Performance" },
   { message = "^test", group = "Fixed" },
   { message = "^fix", group = "Fixed" },
   { message = "^.*: fix", group = "Fixed" },
