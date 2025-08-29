@@ -3,7 +3,7 @@ name: container project - release build
 on:
   push:
     tags:
-      - "[0-9]+\\.[0-9]+\\.[0-9]+"
+      - "v*"
 
 jobs:
   release:
@@ -32,10 +32,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ github.token }}
-          name: ${{ github.ref_name }}-prerelease
-          draft: true
-          make_latest: false
-          prerelease: true
+          name: ${{ github.ref_name }}
+          draft: false
+          make_latest: true
+          prerelease: false
           fail_on_unmatched_files: true
           # files: |
           #   outputs/container-package/*.zip

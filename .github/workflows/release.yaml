@@ -1,22 +1,32 @@
 name: Release
 
-
 on:
+  push:
+    branches:
+      - release/**
+    paths-ignore:
+      - 'CHANGELOG.md'
+      - '.release-version'
   pull_request:
-    types:
-      - closed
+    types: [closed]
     branches:
       - main
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  release:
-    if: startsWith(github.event.pull_request.head.ref, 'release')
+  prepare_release:
+    name: Prepare changelog on release branch
+    if: github.event_name == 'push' && startsWith(github.ref_name, 'release/')
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -32,31 +42,81 @@ jobs:
         with:
           useConfigFile: true
 
-      - name: Update version
+      - name: Set VERSION env
         id: set_version
         run: |
           version="v${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}"
           echo "VERSION=$version" >> $GITHUB_ENV
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "$version" > .release-version
 
       - name: Generate changelog with git-cliff
-        uses: orhun/git-cliff-action@v3
+        uses: orhun/git-cliff-action@v4.5.1
         with:
           config: ./cliff.toml
           args: --tag ${{ env.VERSION }}
         env:
-          OUTPUT: CHANGELOG.md
+            OUTPUT: CHANGELOG.md
 
-      - name: Commit and push version + changelog
+      - name: Commit and push changelog + version file
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout ${{ github.event.pull_request.head.ref }}
-          git pull origin ${{ github.event.pull_request.head.ref }}
-          git add CHANGELOG.md
-          git commit -m "chore: release v${{ env.VERSION }}"
-          git push origin ${{ github.event.pull_request.head.ref }}
+          git add CHANGELOG.md .release-version || true
+          if git diff --cached --quiet; then
+            echo "No release prep changes to commit."
+            exit 0
+          fi
+          git commit -m "chore: prepare release ${{ env.VERSION }} [skip ci]"
+          git push origin HEAD
 
-      - name: Create Git tag
+  tag_release:
+    name: Tag on PR merge
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout merge commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: Install GitVersion (fallback)
+        uses: gittools/actions/gitversion/setup@v0
+        with:
+          versionSpec: '5.x'
+
+      - name: Run GitVersion (fallback)
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0
+        with:
+          useConfigFile: true
+
+      - name: Determine VERSION from file or GitVersion
+        id: determine_version
         run: |
+          if [ -f .release-version ]; then
+            version=$(cat .release-version)
+            echo "Using version from .release-version: $version"
+          else
+            echo ".release-version not found, falling back to GitVersion"
+            version="v${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}"
+          fi
+          echo "VERSION=$version" >> $GITHUB_ENV
+
+      - name: Create and push Git tag (idempotent)
+        run: |
+          git fetch --tags --force
+          if git rev-parse "${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "Tag ${{ env.VERSION }} already exists. Skipping."
+            exit 0
+          fi
           git tag -a "${{ env.VERSION }}" -m "Release ${{ env.VERSION }}"
           git push origin "${{ env.VERSION }}"
