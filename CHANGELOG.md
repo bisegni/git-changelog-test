@@ -13,16 +13,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add file to generate release on github by @bisegni
 
 ### Changed
-- Udpate for the release
-- Prepare release v1.0.27 [skip ci]
-- Prepare release v1.0.27 [skip ci]
 - Update workflow logic by @bisegni
 - Merge branch 'main' of github.com:bisegni/git-changelog-test by @bisegni
 - Merge pull request #25 from bisegni/release-08-2025 by @bisegni in [#25](https://github.com/bisegni/git-changelog-test/pull/25)
 - Merge pull request #24 from bisegni/fix/double-v by @bisegni in [#24](https://github.com/bisegni/git-changelog-test/pull/24)
 - Merge branch 'fix/double-v' of github.com:bisegni/git-changelog-test into fix/double-v by @bisegni
 
+### Chore
+- Prepare release v1.0.27 [skip ci]
+- Prepare release v1.0.27 [skip ci]
+- Prepare release v1.0.27 [skip ci]
+
+### Docs
+- Udpate for the release
+
 ### Fixed
+- To better recognize and manage messages
 - Fixes
 - Fixes by @bisegni
 - Fixes by @bisegni
@@ -33,9 +39,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.26] - 2025-07-07
 
 ### Changed
-- Release vv1.0.26 by @github-actions[bot]
 - Start only on rlease branc by @bisegni
 - Merge pull request #23 from bisegni/release-good by @bisegni in [#23](https://github.com/bisegni/git-changelog-test/pull/23)
+
+### Chore
+- Release vv1.0.26 by @github-actions[bot]
 
 ### Removed
 - Remove double vv by @bisegni
@@ -43,8 +51,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.25] - 2025-07-07
 
 ### Changed
-- Release vv1.0.25 by @github-actions[bot]
 - Merge branch 'release-good' of github.com:bisegni/git-changelog-test into release-good by @bisegni
+
+### Chore
+- Release vv1.0.25 by @github-actions[bot]
 
 ### Fixed
 - Fixes by @bisegni
@@ -54,8 +64,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.25-PullRequest0019.15] - 2025-07-07
 
 ### Changed
-- Release v by @github-actions[bot]
 - Use evn::output by @bisegni
+
+### Chore
+- Release v by @github-actions[bot]
 
 ### Fixed
 - Fixes by @bisegni
@@ -63,21 +75,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.25-PullRequest0018.13] - 2025-07-02
 
 ### Changed
-- Release v by @github-actions[bot]
 - Update the changelog style by @bisegni
+
+### Chore
+- Release v by @github-actions[bot]
 
 ## [1.0.25-PullRequest0017.11] - 2025-07-02
 
 ### Changed
-- Release v by @github-actions[bot]
 - Update action by @bisegni
+
+### Chore
+- Release v by @github-actions[bot]
 
 ## [1.0.25-PullRequest0016.9] - 2025-07-02
 
 ### Changed
+- Update action by @bisegni
+- Update action by @bisegni
+
+### Chore
 - Release v by @github-actions[bot]
-- Update action by @bisegni
-- Update action by @bisegni
 
 ## [1.0.25-PullRequest0014.6] - 2025-07-02
 
@@ -88,7 +106,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Doc: add doc in the same commit message by @bisegni
 
 ### Changed
-- Release v by @github-actions[bot]
 - Update action by @bisegni
 - Update action by @bisegni
 - Update ocmmit by @bisegni
@@ -97,13 +114,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Re-added the close option by @bisegni in [#5](https://github.com/bisegni/git-changelog-test/pull/5)
 - Updating readme to final release by @bisegni in [#4](https://github.com/bisegni/git-changelog-test/pull/4)
 - Modify release management by @bisegni
-- Update CHANGELOG.md by @bisegni
 - Merge branch 'main' of github.com:bisegni/git-changelog-test by @bisegni
-- Update CHANGELOG.md by @bisegni
 - Updates on logic by @bisegni
 - Update test deployment to use the image '' by @github-actions[bot]
 - Update test deployment to use the image '' by @github-actions[bot]
 - Update test deployment to use the image '' by @github-actions[bot]
+
+### Chore
+- Release v by @github-actions[bot]
+- Update CHANGELOG.md by @bisegni
+- Update CHANGELOG.md by @bisegni
 
 ### Fixed
 - Fixes by @bisegni
@@ -126,8 +146,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Another commit by @bisegni in [#3](https://github.com/bisegni/git-changelog-test/pull/3)
 - Update test deployment to use the image '' by @github-actions[bot]
 - Merge pull request #2 from bisegni/feature/b by @bisegni in [#2](https://github.com/bisegni/git-changelog-test/pull/2)
-- Implemented new comment on c++ file by @bisegni
 - Update test deployment to use the image '' by @github-actions[bot]
+
+### Docs
+- Implemented new comment on c++ file by @bisegni
 
 ### Fixed
 - Fixes by @bisegni
@@ -155,6 +177,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Merge branch 'main' of github.com:bisegni/git-changelog-test by @bisegni
 - Update test deployment to use the image '' by @github-actions[bot]
 - Correct the yaml by @bisegni
+
+### Docs
 - Implemented new documentation by @bisegni
 
 ### Fixed
