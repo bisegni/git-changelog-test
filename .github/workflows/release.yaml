@@ -7,6 +7,8 @@ on:
     paths-ignore:
       - 'CHANGELOG.md'
       - '.release-version'
+  create:
+  # manual trigger still available
   pull_request:
     types: [closed]
     branches:
@@ -20,7 +22,9 @@ concurrency:
 jobs:
   prepare_release:
     name: Prepare changelog on release branch
-    if: github.event_name == 'push' && startsWith(github.ref_name, 'release/')
+    if: >-
+      (github.event_name == 'push' && startsWith(github.ref_name, 'release/')) ||
+      (github.event_name == 'create' && github.event.ref_type == 'branch' && startsWith(github.event.ref, 'release/'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -30,6 +34,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # On create event, checkout the newly created branch explicitly
+          ref: ${{ github.ref_name || github.event.ref }}
 
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0
