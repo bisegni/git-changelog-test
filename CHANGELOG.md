@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.28] - 2025-08-29
+
+### Changed
+- Upgraded the logc on how is made the relase on github by @bisegni
+
+
 ## [1.0.27] - 2025-08-29
 
 ### Added
@@ -14,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Changed
-- Adjust the release workflow
+- Adjust the release workflow by @bisegni
 - Update workflow logic by @bisegni
 
 
@@ -35,9 +41,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixes by @bisegni
 
 
-## New Contributors
-* @github-actions[bot] made their first contribution
-* @bisegni made their first contribution
 ## [1.0.26] - 2025-07-07
 
 ### Changed
@@ -226,6 +229,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## New Contributors
 * @github-actions[bot] made their first contribution
 * @bisegni made their first contribution
+[1.0.28]: https://github.com/bisegni/git-changelog-test/compare/v1.0.27..v1.0.28
 [1.0.27]: https://github.com/bisegni/git-changelog-test/compare/v1.0.26..v1.0.27
 [1.0.26]: https://github.com/bisegni/git-changelog-test/compare/vv1.0.25..v1.0.26
 [1.0.25]: https://github.com/bisegni/git-changelog-test/compare/v1.0.25-PullRequest0019.15..vv1.0.25
